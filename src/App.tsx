@@ -12,27 +12,47 @@ import { TerminalModal } from './components/TerminalModal';
 import { CaseStudyModal } from './components/CaseStudyModal';
 import { CvModal } from './components/CvModal';
 import { AiAssistantDrawer } from './components/AiAssistantDrawer';
+import { AdminCmsModal } from './components/AdminCmsModal';
+import { PortfolioProvider, usePortfolio } from './context/PortfolioContext';
 import { Project } from './types';
 
-export default function App() {
+function MainApp() {
   const [activeSection, setActiveSection] = useState('hero');
   const [terminalOpen, setTerminalOpen] = useState(false);
   const [aiDrawerOpen, setAiDrawerOpen] = useState(false);
   const [cvModalOpen, setCvModalOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [aiInitialPrompt, setAiInitialPrompt] = useState('');
+  const { isCmsOpen, setIsCmsOpen } = usePortfolio();
 
-  // Cmd+K or Ctrl+K shortcut listener for terminal
+  // Check for ?admin=true or #admin in URL on load & listen to key shortcuts
   useEffect(() => {
+    const checkUrlForAdmin = () => {
+      const searchParams = new URLSearchParams(window.location.search);
+      if (searchParams.get('admin') === 'true' || window.location.hash === '#admin') {
+        setIsCmsOpen(true);
+      }
+    };
+
+    checkUrlForAdmin();
+    window.addEventListener('hashchange', checkUrlForAdmin);
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
         setTerminalOpen((prev) => !prev);
       }
+      if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key.toLowerCase() === 'e') {
+        e.preventDefault();
+        setIsCmsOpen((prev) => !prev);
+      }
     };
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('hashchange', checkUrlForAdmin);
+    };
+  }, [setIsCmsOpen]);
 
   const handleNavigateSection = (sectionId: string) => {
     setActiveSection(sectionId);
@@ -57,6 +77,7 @@ export default function App() {
         onOpenTerminal={() => setTerminalOpen(true)}
         onOpenAiAssistant={() => setAiDrawerOpen(true)}
         onOpenCvModal={() => setCvModalOpen(true)}
+        onOpenCms={() => setIsCmsOpen(true)}
       />
 
       {/* Main Page Sections */}
@@ -84,6 +105,7 @@ export default function App() {
       <Footer
         onNavigateSection={handleNavigateSection}
         onOpenTerminal={() => setTerminalOpen(true)}
+        onOpenCms={() => setIsCmsOpen(true)}
       />
 
       {/* Terminal CLI Modal */}
@@ -114,6 +136,20 @@ export default function App() {
         initialPrompt={aiInitialPrompt}
       />
 
+      {/* Portfolio CMS Admin Modal */}
+      <AdminCmsModal
+        isOpen={isCmsOpen}
+        onClose={() => setIsCmsOpen(false)}
+      />
+
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <PortfolioProvider>
+      <MainApp />
+    </PortfolioProvider>
   );
 }

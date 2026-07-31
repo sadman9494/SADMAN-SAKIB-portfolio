@@ -1,3 +1,37 @@
+export interface PersonalDetails {
+  name: string;
+  title: string;
+  brand: string;
+  handle: string;
+  tagline: string;
+  email: string;
+  location: string;
+  education: {
+    degree: string;
+    institution: string;
+    cgpa: string;
+    honors: string;
+    graduationYear: string;
+  };
+  socials: {
+    github: string;
+    linkedin: string;
+    researchgate: string;
+    scholar: string;
+  };
+  stats: { label: string; value: string; note: string }[];
+}
+
+export interface PortfolioData {
+  personalDetails: PersonalDetails;
+  profileImage: string;
+  experiences: Experience[];
+  projects: Project[];
+  researchPapers: ResearchPaper[];
+  blogArticles: BlogArticle[];
+  skillCategories: SkillCategory[];
+}
+
 export interface Experience {
   id: string;
   role: string;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { X, Printer, Download, Mail, MapPin, Award, CheckCircle2, FileText } from 'lucide-react';
-import { personalDetails, experiences, projects, researchPapers } from '../data/portfolioData';
+import { usePortfolio } from '../context/PortfolioContext';
 
 interface CvModalProps {
   isOpen: boolean;
@@ -8,6 +8,9 @@ interface CvModalProps {
 }
 
 export const CvModal: React.FC<CvModalProps> = ({ isOpen, onClose }) => {
+  const { data } = usePortfolio();
+  const { personalDetails, experiences, projects, researchPapers } = data;
+
   if (!isOpen) return null;
 
   const handlePrint = () => {

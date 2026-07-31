@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { BookOpen, FileText, Award, ExternalLink, Github, Copy, Check, Sparkles, Share2 } from 'lucide-react';
-import { researchPapers, blogArticles } from '../data/portfolioData';
+import { usePortfolio } from '../context/PortfolioContext';
 
 export const ResearchSection: React.FC = () => {
+  const { data } = usePortfolio();
+  const { researchPapers, blogArticles } = data;
   const [citationCopied, setCitationCopied] = useState(false);
   const spotlightPaper = researchPapers[0];
 

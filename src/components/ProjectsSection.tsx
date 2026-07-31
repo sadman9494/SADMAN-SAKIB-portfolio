@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Cpu, Boxes, Server, ExternalLink, Github, Terminal, ArrowUpRight, CheckCircle, Sparkles } from 'lucide-react';
-import { projects } from '../data/portfolioData';
+import { usePortfolio } from '../context/PortfolioContext';
 import { Project } from '../types';
 
 interface ProjectsSectionProps {
@@ -8,6 +8,8 @@ interface ProjectsSectionProps {
 }
 
 export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ onSelectProject }) => {
+  const { data } = usePortfolio();
+  const { projects } = data;
   const [activeCategory, setActiveCategory] = useState<string>('All');
 
   const categories = ['All', 'AI & Automation', 'Blockchain', 'Enterprise Systems'];

@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Mail, Terminal, Send, CheckCircle2, MapPin, Github, Linkedin, Globe, Copy, Check, Sparkles } from 'lucide-react';
-import { personalDetails } from '../data/portfolioData';
+import { usePortfolio } from '../context/PortfolioContext';
 
 export const ContactSection: React.FC = () => {
+  const { data } = usePortfolio();
+  const { personalDetails } = data;
   const [formData, setFormData] = useState({
     name: '',
     email: '',

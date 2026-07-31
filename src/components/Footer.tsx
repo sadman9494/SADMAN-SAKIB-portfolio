@@ -1,13 +1,16 @@
 import React from 'react';
-import { Terminal, Github, Linkedin, Globe, Heart } from 'lucide-react';
-import { personalDetails } from '../data/portfolioData';
+import { Terminal, Github, Linkedin, Globe } from 'lucide-react';
+import { usePortfolio } from '../context/PortfolioContext';
 
 interface FooterProps {
   onNavigateSection: (sectionId: string) => void;
   onOpenTerminal: () => void;
+  onOpenCms?: () => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({ onNavigateSection, onOpenTerminal }) => {
+  const { data } = usePortfolio();
+  const { personalDetails } = data;
   return (
     <footer className="bg-[#09090b] border-t border-[#27272a] py-12 text-left font-mono">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -63,7 +66,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateSection, onOpenTermina
           {/* CLI & Social */}
           <div className="md:col-span-3 space-y-3 text-xs">
             <span className="text-[#a78bfa] font-bold block uppercase tracking-wider text-[11px]">
-              Terminal & Socials
+              Controls & Tools
             </span>
             <button
               onClick={onOpenTerminal}

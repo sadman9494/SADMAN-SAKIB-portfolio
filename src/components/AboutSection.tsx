@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { User, Terminal, Award, GraduationCap, ShieldCheck, Cpu, Code2, CheckCircle } from 'lucide-react';
-import { personalDetails } from '../data/portfolioData';
+import { User, Terminal, Award, GraduationCap, ShieldCheck, Cpu, Code2, CheckCircle, Sparkles } from 'lucide-react';
+import { usePortfolio } from '../context/PortfolioContext';
 
 export const AboutSection: React.FC = () => {
+  const { data } = usePortfolio();
+  const { personalDetails, profileImage } = data;
   const [activeTab, setActiveTab] = useState<'profile' | 'education' | 'philosophy'>('profile');
 
   return (
@@ -58,22 +60,40 @@ export const AboutSection: React.FC = () => {
             <div className="p-6 font-mono text-xs text-left space-y-4 bg-[#09090b]">
               
               {activeTab === 'profile' && (
-                <div className="space-y-3 leading-relaxed text-[#a1a1aa]">
-                  <p className="text-white font-bold text-sm">
-                    NAME: Sadman Sakib
-                  </p>
-                  <p className="text-[#a78bfa]">
-                    ROLE: Software Engineer & AI Consultant | SS ARCHITECT
-                  </p>
-                  <p className="text-[#38bdf8]">
-                    LOCATION: Dhaka, Bangladesh [UTC+6] | Open for International Remote & Advisory Roles
-                  </p>
+                <div className="space-y-4 leading-relaxed text-[#a1a1aa]">
+                  <div className="flex flex-col sm:flex-row items-center gap-4 p-3.5 rounded-xl bg-[#121215] border border-[#27272a] group">
+                    <div className="relative shrink-0 w-20 h-20 group/avatar cursor-pointer">
+                      {/* Glittering Background Stars on Hover */}
+                      <div className="absolute -inset-3 opacity-0 group-hover/avatar:opacity-100 transition-all duration-500 pointer-events-none z-10">
+                        <Sparkles className="absolute -top-2 -left-2 w-4 h-4 text-[#f472b6] animate-bounce" />
+                        <Sparkles className="absolute -top-3 -right-1 w-4 h-4 text-[#a78bfa] animate-pulse" />
+                        <Sparkles className="absolute -bottom-2 -left-1 w-4 h-4 text-[#38bdf8] animate-pulse" />
+                        <Sparkles className="absolute -bottom-1 -right-2 w-4 h-4 text-[#34d399] animate-bounce" />
+                      </div>
+                      <div className="relative overflow-hidden rounded-xl border-2 border-[#27272a] group-hover/avatar:border-[#a78bfa] transition-all duration-500 w-full h-full shadow-lg">
+                        <img
+                          src={profileImage}
+                          alt="Profile Avatar"
+                          className="w-full h-full object-cover transition-all duration-500 ease-out group-hover/avatar:scale-105"
+                          style={{ imageRendering: 'pixelated' }}
+                        />
+                      </div>
+                    </div>
+                    <div className="text-center sm:text-left space-y-1 font-mono">
+                      <p className="text-white font-bold text-sm">
+                        NAME: {personalDetails.name}
+                      </p>
+                      <p className="text-[#a78bfa]">
+                        ROLE: {personalDetails.title}
+                      </p>
+                      <p className="text-[#38bdf8] text-[11px]">
+                        LOCATION: {personalDetails.location}
+                      </p>
+                    </div>
+                  </div>
                   <hr className="border-[#27272a]" />
-                  <p className="text-[#fafafa]">
-                    Sadman is a Software Engineer specializing in scalable enterprise systems, AI pipeline integration, and blockchain architectures. Holding a B.Sc. in CSE with CGPA 3.95 (Summa Cum Laude) and the Vice-Chancellor's Gold Medal from AIUB, he blends theoretical rigor with hands-on system architecture.
-                  </p>
-                  <p>
-                    Throughout his career across BAT / Agnis Solutions, Intellias, Shadhin Lab, and iBOS Limited, Sadman has built production systems that process thousands of candidates, automate data schema translations with 94% time savings, and record immutable mobile device transactions on peer-reviewed Hyperledger networks.
+                  <p className="text-[#fafafa] whitespace-pre-line">
+                    {personalDetails.aboutText}
                   </p>
                 </div>
               )}
@@ -82,20 +102,20 @@ export const AboutSection: React.FC = () => {
                 <div className="space-y-4 text-[#a1a1aa]">
                   <div className="p-4 rounded-xl bg-[#121215] border border-[#27272a] space-y-2">
                     <div className="flex items-center justify-between text-white font-bold text-sm">
-                      <span>American International University-Bangladesh (AIUB)</span>
-                      <span className="text-[#34d399] font-mono text-xs">2019 - 2023</span>
+                      <span>{personalDetails.education.institution}</span>
+                      <span className="text-[#34d399] font-mono text-xs">{personalDetails.education.period}</span>
                     </div>
                     <p className="text-[#a78bfa] font-semibold text-xs">
-                      B.Sc. in Computer Science & Engineering
+                      {personalDetails.education.degree}
                     </p>
                     <div className="grid grid-cols-2 gap-2 pt-2 text-[11px] font-mono">
                       <div className="p-2 rounded bg-[#09090b] border border-[#27272a]">
                         <span className="text-[#a1a1aa] block">FINAL CGPA:</span>
-                        <span className="text-white font-bold text-sm">3.95 / 4.00</span>
+                        <span className="text-white font-bold text-sm">{personalDetails.education.cgpa}</span>
                       </div>
                       <div className="p-2 rounded bg-[#09090b] border border-[#27272a]">
                         <span className="text-[#a1a1aa] block">ACADEMIC STANDING:</span>
-                        <span className="text-[#34d399] font-bold text-xs">Summa Cum Laude</span>
+                        <span className="text-[#34d399] font-bold text-xs">{personalDetails.education.honors}</span>
                       </div>
                     </div>
                   </div>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Terminal, Bot, FileText, Menu, X, Cpu, CheckCircle2 } from 'lucide-react';
-import { personalDetails } from '../data/portfolioData';
+import { Terminal, Bot, FileText, Menu, X, Sparkles } from 'lucide-react';
+import { usePortfolio } from '../context/PortfolioContext';
 
 interface HeaderProps {
   activeSection: string;
@@ -8,6 +8,7 @@ interface HeaderProps {
   onOpenTerminal: () => void;
   onOpenAiAssistant: () => void;
   onOpenCvModal: () => void;
+  onOpenCms?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -16,7 +17,10 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenTerminal,
   onOpenAiAssistant,
   onOpenCvModal,
+  onOpenCms,
 }) => {
+  const { data } = usePortfolio();
+  const { personalDetails } = data;
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 

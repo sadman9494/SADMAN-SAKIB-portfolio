@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Terminal, ArrowRight, Play, Award, CheckCircle2, Cpu, ShieldCheck, Sparkles, Copy, Check } from 'lucide-react';
-import { personalDetails } from '../data/portfolioData';
+import { Terminal, ArrowRight, Award, Copy, Check, MapPin, CheckCircle2, Sparkles } from 'lucide-react';
+import { InteractiveTerminal } from './InteractiveTerminal';
+import { usePortfolio } from '../context/PortfolioContext';
 
 interface HeroProps {
   onOpenTerminal: () => void;
@@ -13,6 +14,8 @@ export const Hero: React.FC<HeroProps> = ({
   onOpenAiAssistant,
   onExploreProjects,
 }) => {
+  const { data, updateProfileImage } = usePortfolio();
+  const { personalDetails, profileImage } = data;
   const [copied, setCopied] = useState(false);
 
   const copyEmail = () => {
@@ -27,40 +30,97 @@ export const Hero: React.FC<HeroProps> = ({
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-[#a78bfa]/10 blur-[120px] rounded-full pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
           
-          {/* Left Column: Headline & Intro */}
+          {/* Left Column: Image Section + Headline & Intro */}
           <div className="lg:col-span-7 space-y-6 text-left">
-            {/* System Status Badge */}
-            <div className="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-[#121215] border border-[#27272a]">
-              <span className="w-2 h-2 rounded-full bg-[#34d399] animate-ping" />
-              <span className="text-xs font-mono text-[#a1a1aa]">
-                <strong className="text-[#34d399] font-bold">SYSTEM_READY</strong> // Dhaka [UTC+6]
-              </span>
-              <span className="text-xs text-[#27272a]">|</span>
-              <span className="text-xs font-mono text-[#a78bfa]">v2.5_PROD</span>
+            
+            {/* System Status Badge & Location Ribbon */}
+            <div className="flex flex-wrap items-center gap-2">
+              <div className="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-[#121215] border border-[#27272a]">
+                <span className="w-2 h-2 rounded-full bg-[#34d399] animate-ping" />
+                <span className="text-xs font-mono text-[#a1a1aa]">
+                  <strong className="text-[#34d399] font-bold">SYSTEM_READY</strong> // Dhaka [UTC+6]
+                </span>
+                <span className="text-xs text-[#27272a]">|</span>
+                <span className="text-xs font-mono text-[#a78bfa]">v2.5_PROD</span>
+              </div>
+
+              <div className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-[#121215] border border-[#a78bfa]/30 text-xs font-mono text-[#a78bfa]">
+                <Award className="w-3.5 h-3.5 text-[#34d399]" />
+                <span>Gold Medalist & Summa Cum Laude</span>
+              </div>
             </div>
 
-            {/* Main Title */}
-            <div className="space-y-3">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white font-mono leading-[1.15]">
-                Sadman Sakib
-              </h1>
-              <p className="text-xl sm:text-2xl font-mono text-[#a78bfa] font-semibold">
-                Software Engineer & AI Consultant
-              </p>
+            {/* Left Image Section + Main Title Header */}
+            <div className="p-4 sm:p-5 rounded-2xl bg-[#0c0c0f] border border-[#27272a] shadow-xl flex flex-col sm:flex-row items-center sm:items-start gap-5 relative overflow-hidden group">
+              <div className="absolute -right-10 -bottom-10 w-36 h-36 bg-[#a78bfa]/10 blur-2xl rounded-full pointer-events-none" />
+
+              {/* Image Frame Section */}
+              <div className="relative shrink-0 group/avatar cursor-pointer">
+                {/* Glittering Background Stars on Hover */}
+                <div className="absolute -inset-4 opacity-0 group-hover/avatar:opacity-100 transition-all duration-500 pointer-events-none z-10">
+                  <Sparkles className="absolute -top-3 -left-3 w-5 h-5 text-[#f472b6] animate-bounce" />
+                  <Sparkles className="absolute -top-4 -right-2 w-6 h-6 text-[#a78bfa] animate-pulse" />
+                  <Sparkles className="absolute -bottom-3 -left-2 w-5 h-5 text-[#38bdf8] animate-pulse" />
+                  <Sparkles className="absolute -bottom-2 -right-3 w-6 h-6 text-[#34d399] animate-bounce" />
+                  <div className="absolute top-1/2 -left-3 -translate-y-1/2 w-2 h-2 rounded-full bg-[#facc15] shadow-[0_0_8px_#facc15] animate-ping" />
+                  <div className="absolute top-1/2 -right-3 -translate-y-1/2 w-2 h-2 rounded-full bg-[#a78bfa] shadow-[0_0_8px_#a78bfa] animate-ping" />
+                </div>
+
+                <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-2xl overflow-hidden border-2 border-[#a78bfa]/50 shadow-xl relative transition-all duration-500 group-hover/avatar:border-[#a78bfa] group-hover/avatar:shadow-[0_0_30px_rgba(167,139,250,0.5)]">
+                  <img
+                    src={profileImage}
+                    alt="Sadman Sakib Profile Avatar"
+                    referrerPolicy="no-referrer"
+                    className="w-full h-full object-cover object-center transition-all duration-500 ease-out group-hover/avatar:scale-105"
+                    style={{ imageRendering: 'pixelated' }}
+                  />
+                </div>
+
+                {/* Active Indicator Badge */}
+                <div className="absolute -bottom-2 -right-2 bg-[#121215] border border-[#34d399]/60 px-2 py-0.5 rounded-md flex items-center space-x-1.5 shadow-md">
+                  <span className="w-2 h-2 rounded-full bg-[#34d399] animate-pulse" />
+                  <span className="text-[10px] font-mono font-bold tracking-wider text-[#34d399]">
+                    ONLINE
+                  </span>
+                </div>
+              </div>
+
+              {/* Title & Role Overview inside Left Section */}
+              <div className="space-y-2 text-center sm:text-left flex-1">
+                <div className="flex flex-col">
+                  <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white font-mono leading-[1.1]">
+                    {personalDetails.name}
+                  </h1>
+                  <p className="text-lg sm:text-xl font-mono text-[#a78bfa] font-semibold mt-1">
+                    {personalDetails.title}
+                  </p>
+                </div>
+
+                <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 pt-1 text-xs font-mono text-[#a1a1aa]">
+                  <span className="inline-flex items-center space-x-1 bg-[#121215] px-2.5 py-1 rounded border border-[#27272a]">
+                    <MapPin className="w-3 h-3 text-[#38bdf8]" />
+                    <span>{personalDetails.location}</span>
+                  </span>
+                  <span className="inline-flex items-center space-x-1 bg-[#121215] px-2.5 py-1 rounded border border-[#27272a] text-[#34d399]">
+                    <CheckCircle2 className="w-3 h-3 text-[#34d399]" />
+                    <span>BAT / Agnis, Intellias, Shadhin</span>
+                  </span>
+                </div>
+              </div>
             </div>
 
-            {/* Subtitle */}
+            {/* Subtitle Description */}
             <p className="text-base sm:text-lg text-[#a1a1aa] leading-relaxed max-w-2xl font-sans">
-              Architecting high-throughput distributed microservices, PyTorch AI candidate matching pipelines, and permissioned Hyperledger Fabric blockchain networks. 
-              <span className="text-white font-medium block mt-1 font-mono text-sm">
-                🎓 AIUB Vice-Chancellor's Gold Medalist & CGPA 3.95 (Summa Cum Laude)
+              {personalDetails.tagline}
+              <span className="text-white font-medium block mt-1.5 font-mono text-sm">
+                🎓 {personalDetails.education.institution} — {personalDetails.education.honors} ({personalDetails.education.cgpa})
               </span>
             </p>
 
             {/* Action Buttons */}
-            <div className="pt-2 flex flex-wrap gap-3 items-center">
+            <div className="pt-1 flex flex-wrap gap-3 items-center">
               <button
                 onClick={onExploreProjects}
                 className="flex items-center space-x-2 px-5 py-3 rounded-xl bg-[#a78bfa] hover:bg-[#b8a1ff] text-[#09090b] font-mono text-sm font-bold transition-all shadow-lg shadow-[#a78bfa]/20 cursor-pointer"
@@ -74,7 +134,7 @@ export const Hero: React.FC<HeroProps> = ({
                 className="flex items-center space-x-2 px-4 py-3 rounded-xl bg-[#121215] hover:bg-[#18181c] border border-[#27272a] text-white font-mono text-sm transition-all hover:border-[#a78bfa] cursor-pointer"
               >
                 <Terminal className="w-4 h-4 text-[#a78bfa]" />
-                <span>Launch CLI Mode</span>
+                <span>Launch CLI Modal Mode</span>
               </button>
 
               <button
@@ -83,12 +143,12 @@ export const Hero: React.FC<HeroProps> = ({
                 title="Copy Email Address"
               >
                 {copied ? <Check className="w-4 h-4 text-[#34d399]" /> : <Copy className="w-4 h-4" />}
-                <span>{copied ? 'Copied!' : 'hello@ssarchitect.dev'}</span>
+                <span>{copied ? 'Copied!' : personalDetails.email}</span>
               </button>
             </div>
 
             {/* Metrics Ribbon */}
-            <div className="pt-6 grid grid-cols-2 sm:grid-cols-4 gap-3 border-t border-[#27272a]">
+            <div className="pt-5 grid grid-cols-2 sm:grid-cols-4 gap-3 border-t border-[#27272a]">
               {personalDetails.stats.map((stat, idx) => (
                 <div key={idx} className="p-3 rounded-xl bg-[#0c0c0f] border border-[#27272a]">
                   <div className="text-xl sm:text-2xl font-mono font-bold text-white text-left">
@@ -105,79 +165,20 @@ export const Hero: React.FC<HeroProps> = ({
             </div>
           </div>
 
-          {/* Right Column: Terminal Window Simulation */}
-          <div className="lg:col-span-5">
-            <div className="rounded-2xl bg-[#0c0c0f] border border-[#27272a] overflow-hidden shadow-2xl terminal-glow">
-              {/* Terminal Window Header Bar */}
-              <div className="bg-[#121215] px-4 py-3 border-b border-[#27272a] flex items-center justify-between">
-                <div className="flex items-center space-x-2">
-                  <span className="w-3 h-3 rounded-full bg-[#ef4444]/80 inline-block" />
-                  <span className="w-3 h-3 rounded-full bg-[#f59e0b]/80 inline-block" />
-                  <span className="w-3 h-3 rounded-full bg-[#10b981]/80 inline-block" />
-                  <span className="ml-2 font-mono text-xs text-[#a1a1aa]">root@ss-architect: ~/system_diagnostics</span>
-                </div>
-                <div className="flex items-center space-x-1.5 text-[10px] font-mono text-[#34d399]">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#34d399] animate-pulse" />
-                  <span>bash</span>
-                </div>
-              </div>
+          {/* Right Column: Fully Active & Reactive Live Terminal */}
+          <div className="lg:col-span-5 space-y-4">
+            <InteractiveTerminal
+              compact={false}
+              onNavigateSection={(sectionId) => {
+                const element = document.getElementById(sectionId);
+                if (element) element.scrollIntoView({ behavior: 'smooth' });
+              }}
+              onOpenCvModal={onOpenTerminal}
+              onAskAi={(prompt) => onOpenAiAssistant()}
+            />
 
-              {/* Terminal Body Content */}
-              <div className="p-5 font-mono text-xs space-y-3.5 text-left bg-[#09090b]">
-                <div className="flex items-start space-x-2">
-                  <span className="text-[#a78bfa] font-bold">root@ss-architect:~$</span>
-                  <span className="text-white">./init_architect_profile.sh --verbose</span>
-                </div>
-
-                <div className="text-[#a1a1aa] pl-3 border-l border-[#27272a] space-y-2 text-[11px]">
-                  <p className="text-[#34d399]">
-                    [SUCCESS] Engine initialized. Loading Sadman Sakib's profile parameters...
-                  </p>
-                  
-                  <div className="p-2.5 rounded bg-[#121215] border border-[#27272a] space-y-1 text-[#fafafa]">
-                    <div className="flex justify-between">
-                      <span className="text-[#a1a1aa]">ACADEMIC:</span>
-                      <span className="text-[#38bdf8] font-semibold">AIUB Gold Medalist (CGPA 3.95)</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-[#a1a1aa]">CORE ROLES:</span>
-                      <span className="text-white">BAT / Agnis, Intellias, Shadhin Lab</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-[#a1a1aa]">AI ENGINE:</span>
-                      <span className="text-[#a78bfa]">Project Kronos (87% Match Accuracy)</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-[#a1a1aa]">BLOCKCHAIN:</span>
-                      <span className="text-[#34d399]">Hyperledger Fabric Tracker (IEEE '24)</span>
-                    </div>
-                  </div>
-
-                  <div className="space-y-1">
-                    <p className="text-[#a1a1aa]">&gt; checking pyTorch CUDA pipeline... <span className="text-[#34d399]">[OK]</span></p>
-                    <p className="text-[#a1a1aa]">&gt; pinging .NET Core microservices gateway... <span className="text-[#34d399]">[200 OK - 8ms]</span></p>
-                    <p className="text-[#a1a1aa]">&gt; verifying LeetCode global standing... <span className="text-[#38bdf8]">[Top 5%]</span></p>
-                  </div>
-                </div>
-
-                {/* Prompt trigger */}
-                <div className="pt-2 flex items-center justify-between border-t border-[#27272a]/60">
-                  <div className="flex items-center space-x-2 text-[#a1a1aa]">
-                    <span className="text-[#34d399] font-bold">&gt;</span>
-                    <span className="text-white animate-pulse">Type 'help' or click CLI below...</span>
-                  </div>
-                  <button
-                    onClick={onOpenTerminal}
-                    className="px-2.5 py-1 rounded bg-[#a78bfa]/20 hover:bg-[#a78bfa]/30 text-[#a78bfa] border border-[#a78bfa]/40 text-[10px] font-mono"
-                  >
-                    Run Interactive CLI
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Quick Badge */}
-            <div className="mt-4 p-3 rounded-xl bg-[#0c0c0f] border border-[#27272a] flex items-center justify-between text-xs font-mono">
+            {/* Quick Peer-Reviewed Badge below Terminal */}
+            <div className="p-3 rounded-xl bg-[#0c0c0f] border border-[#27272a] flex items-center justify-between text-xs font-mono shadow-md">
               <div className="flex items-center space-x-2">
                 <Award className="w-4 h-4 text-[#a78bfa]" />
                 <span className="text-white font-medium">IEEE / Springer Peer-Reviewed Publication (2024)</span>
@@ -191,3 +192,4 @@ export const Hero: React.FC<HeroProps> = ({
     </section>
   );
 };
+

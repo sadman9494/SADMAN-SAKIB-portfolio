@@ -1,8 +1,10 @@
 import React from 'react';
 import { Server, Cpu, Boxes, Code, Award, Terminal, CheckCircle2, Trophy } from 'lucide-react';
-import { skillCategories, personalDetails } from '../data/portfolioData';
+import { usePortfolio } from '../context/PortfolioContext';
 
 export const SkillsSection: React.FC = () => {
+  const { data } = usePortfolio();
+  const { skillCategories, personalDetails } = data;
   const getCategoryIcon = (iconName: string) => {
     switch (iconName) {
       case 'Server':

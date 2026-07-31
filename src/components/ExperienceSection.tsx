@@ -1,11 +1,24 @@
 import React, { useState } from 'react';
 import { Briefcase, Terminal, Calendar, MapPin, ChevronRight, CheckCircle2, TrendingUp, Code2 } from 'lucide-react';
-import { experiences } from '../data/portfolioData';
+import { usePortfolio } from '../context/PortfolioContext';
 
 export const ExperienceSection: React.FC = () => {
-  const [selectedExpId, setSelectedExpId] = useState<string>(experiences[0].id);
+  const { data } = usePortfolio();
+  const { experiences } = data;
+  const [selectedExpId, setSelectedExpId] = useState<string>(experiences[0]?.id || '');
 
-  const selectedExp = experiences.find((e) => e.id === selectedExpId) || experiences[0];
+  const selectedExp = experiences.find((e) => e.id === selectedExpId) || experiences[0] || {
+    id: 'fallback',
+    role: '',
+    company: '',
+    period: '',
+    location: '',
+    description: '',
+    terminalCommand: '',
+    achievements: [],
+    techStack: [],
+    metrics: [],
+  };
 
   return (
     <section id="experience" className="py-20 bg-[#09090b] relative border-t border-[#27272a]">
